@@ -1,13 +1,9 @@
 package com.example.javafx;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,10 +11,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URL;
-import java.sql.SQLOutput;
 
 @Component
 public class StageListener implements ApplicationListener<JavafxApplication.StageReadyEvent> {
@@ -28,7 +20,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     private final ApplicationContext applicationContext;
 
     Stage window;
-    Scene scene1, scene2;
+    Scene scene, scene2;
 
     Button button;
     //private Label;
@@ -46,40 +38,24 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Welcome to JavaFX World!");
 
-        Label l1 = new Label("Welcome to the first scene.");
-        Button b1 = new Button("Close the program");
-        //b1.setOnAction(e -> window.setScene(scene2));
-        // show alert window
-        //b1.setOnAction(e -> AlertBox.display("Alert WIndow", "This is an alert window"));
+        HBox topMenu = new HBox();
+        Button buttonA = new Button("File");
+        Button buttonB = new Button("Edit");
+        Button buttonC = new Button("View");
+        topMenu.getChildren().addAll(buttonA, buttonB, buttonC);
 
-        // show confirm box
-        b1.setOnAction(e -> {
-            boolean result = ConfirmBox.display("Confirm your answer", "Are you sure you want to close?");
-            System.out.println(result);
-        });
+        VBox leftMenu = new VBox();
+        Button buttonD = new Button("D");
+        Button buttonE = new Button("E");
+        Button buttonF = new Button("F");
+        leftMenu.getChildren().addAll(buttonD, buttonE, buttonF);
 
-        // save some information before closing program
-        b1.setOnAction(e -> closeProgram());
-        window.setOnCloseRequest(e -> {
-            // consume the event, otherwise, the program closes even if you select No
-            e.consume();
-            closeProgram();
-        });
-        // layout 1
-        VBox layout1 = new VBox(20);
-        layout1.getChildren().addAll(l1, b1);
-        scene1 = new Scene(layout1, 200, 200);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setTop(topMenu);
+        borderPane.setLeft(leftMenu);
 
-        // Button 2
-        Button b2 = new Button("Go back to scene 1");
-        b2.setOnAction(e -> window.setScene(scene1));
-
-        // layout 1
-        StackPane layout2 = new StackPane();
-        layout2.getChildren().addAll(b2);
-        scene2 = new Scene(layout2, 600, 300);
-
-        window.setScene(scene1);
+        scene = new Scene(borderPane, 200, 200);
+        window.setScene(scene);
         //window.setTitle("Windo title");
         window.show();
 
