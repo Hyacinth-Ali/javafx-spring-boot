@@ -47,11 +47,24 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window.setTitle("Welcome to JavaFX World!");
 
         Label l1 = new Label("Welcome to the first scene.");
-        Button b1 = new Button("Go to scene 2");
+        Button b1 = new Button("Close the program");
         //b1.setOnAction(e -> window.setScene(scene2));
         // show alert window
-        b1.setOnAction(e -> AlertBox.display("Alert WIndow", "This is an alert window"));
+        //b1.setOnAction(e -> AlertBox.display("Alert WIndow", "This is an alert window"));
 
+        // show confirm box
+        b1.setOnAction(e -> {
+            boolean result = ConfirmBox.display("Confirm your answer", "Are you sure you want to close?");
+            System.out.println(result);
+        });
+
+        // save some information before closing program
+        b1.setOnAction(e -> closeProgram());
+        window.setOnCloseRequest(e -> {
+            // consume the event, otherwise, the program closes even if you select No
+            e.consume();
+            closeProgram();
+        });
         // layout 1
         VBox layout1 = new VBox(20);
         layout1.getChildren().addAll(l1, b1);
@@ -87,5 +100,13 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    private void closeProgram() {
+        boolean answer = ConfirmBox.display("Title", "Are sure you want to close the program?");
+        if (answer) {
+            window.close();
+        }
+
     }
 }
