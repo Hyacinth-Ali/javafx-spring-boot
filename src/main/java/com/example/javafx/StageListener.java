@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -42,29 +43,44 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     @Override
     public void onApplicationEvent(JavafxApplication.StageReadyEvent stageReadyEvent) {
 
-        Stage stage = stageReadyEvent.getStage();
-        stage.setTitle("Welcome to JavaFX World!");
+        window = stageReadyEvent.getStage();
+        window.setTitle("Welcome to JavaFX World!");
 
-        button = new Button("Click me");
-        button.setOnAction(e -> System.out.println("Yes, being clicked with lamba technique"));
-        StackPane pane = new StackPane();
-        pane.getChildren().add(button);
+        Label l1 = new Label("Welcome to the first scene.");
+        Button b1 = new Button("Go to scene 2");
+        //b1.setOnAction(e -> window.setScene(scene2));
+        // show alert window
+        b1.setOnAction(e -> AlertBox.display("Alert WIndow", "This is an alert window"));
 
-        Scene scene = new Scene ( pane, 300, 250);
-        stage.setScene(scene);
-        stage.show();
+        // layout 1
+        VBox layout1 = new VBox(20);
+        layout1.getChildren().addAll(l1, b1);
+        scene1 = new Scene(layout1, 200, 200);
+
+        // Button 2
+        Button b2 = new Button("Go back to scene 1");
+        b2.setOnAction(e -> window.setScene(scene1));
+
+        // layout 1
+        StackPane layout2 = new StackPane();
+        layout2.getChildren().addAll(b2);
+        scene2 = new Scene(layout2, 600, 300);
+
+        window.setScene(scene1);
+        //window.setTitle("Windo title");
+        window.show();
 
 //        try {
 //            // original codes
-//            Stage stage = stageReadyEvent.getStage();
+//            Stage window = stageReadyEvent.getStage();
 //            URL url = fxml.getURL();
 //            FXMLLoader fxmlLoader = new FXMLLoader(url);
 //            fxmlLoader.setControllerFactory(applicationContext::getBean);
 //            Parent root = fxmlLoader.load();
 //            Scene scene = new Scene(root, 600, 600);
-//            stage.setScene(scene);
-//            stage.setTitle(this.applicationTitle);
-//            stage.show();
+//            window.setScene(scene);
+//            window.setTitle(this.applicationTitle);
+//            window.show();
 //
 //
 //
