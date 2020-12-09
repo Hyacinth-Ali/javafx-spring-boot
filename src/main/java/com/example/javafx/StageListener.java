@@ -1,8 +1,12 @@
 package com.example.javafx;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -36,27 +40,40 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     public void onApplicationEvent(JavafxApplication.StageReadyEvent stageReadyEvent) {
 
         window = stageReadyEvent.getStage();
-        window.setTitle("Welcome to JavaFX World!");
+        window.setTitle("Hyacinth - JavaFX!");
 
-        HBox topMenu = new HBox();
-        Button buttonA = new Button("File");
-        Button buttonB = new Button("Edit");
-        Button buttonC = new Button("View");
-        topMenu.getChildren().addAll(buttonA, buttonB, buttonC);
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
 
-        VBox leftMenu = new VBox();
-        Button buttonD = new Button("D");
-        Button buttonE = new Button("E");
-        Button buttonF = new Button("F");
-        leftMenu.getChildren().addAll(buttonD, buttonE, buttonF);
+        // name label
+        Label l = new Label("Username");
+        GridPane.setConstraints(l, 0, 0);
 
-        BorderPane borderPane = new BorderPane();
-        borderPane.setTop(topMenu);
-        borderPane.setLeft(leftMenu);
+        // name input
+        TextField input = new TextField("Bucky");
+        GridPane.setConstraints(input, 1, 0);
 
-        scene = new Scene(borderPane, 200, 200);
+        // Password Label
+        Label pw = new Label("Password");
+        GridPane.setConstraints(pw, 0, 1);
+
+        // Password input
+        TextField pwInput = new TextField();
+        pwInput.setPromptText("Password");
+        GridPane.setConstraints(pwInput, 1, 1);
+
+        Button login = new Button("Log In");
+        GridPane.setConstraints(login, 1, 2);
+
+        grid.getChildren().addAll(l, input, pw, pwInput, login);
+
+        Scene scene = new Scene(grid, 300, 200);
         window.setScene(scene);
-        //window.setTitle("Windo title");
+        window.show();
+
+
         window.show();
 
 //        try {
