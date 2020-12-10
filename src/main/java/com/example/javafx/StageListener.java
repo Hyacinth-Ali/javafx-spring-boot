@@ -43,22 +43,28 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
         button = new Button("Click me");
 
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        comboBox = new ComboBox<>();
 
         // getItems returns the Observable objec which you can add item to
-        choiceBox.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
+        comboBox.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
 
-        // set a dfault value
-        choiceBox.setValue("Apple");
+        comboBox.setPromptText("Favourite Fruit?");
+
+        comboBox.setEditable(true);
+
+        // combo box generate action
+        comboBox.setOnAction(e -> System.out.println( "U selected: " + comboBox.getValue() ));
+
+        button.setOnAction(e -> printFruit());
 
         // listen for selection changes
-        choiceBox.getSelectionModel().selectedItemProperty()
-                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
+//        choiceBox.getSelectionModel().selectedItemProperty()
+//                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
 
         VBox layout = new VBox();
         layout.setPadding(new Insets(20, 20, 20, 20));
         layout.setSpacing(10);
-        layout.getChildren().addAll(choiceBox, button);
+        layout.getChildren().addAll(comboBox, button);
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -84,6 +90,10 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    private void printFruit() {
+        System.out.println(comboBox.getValue());
     }
 
     private void handleOption(CheckBox box1, CheckBox box2) {
