@@ -2,10 +2,7 @@ package com.example.javafx;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -43,18 +40,22 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        // check boxes
-        CheckBox box1 = new CheckBox("Bacon");
-        CheckBox box2 = new CheckBox("Tuna");
+        button = new Button("Click me");
 
-        box2.setSelected(true);
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
-        Button button = new Button("Order Now");
-        button.setOnAction(e -> handleOption(box1, box2));
+        // getItems returns the Observable objec which you can add item to
+        choiceBox.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
 
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(20,20,20,20));
-        layout.getChildren().addAll(box1, box2, button);
+        // set a dfault value
+        choiceBox.setValue("Apple");
+
+        VBox layout = new VBox();
+        layout.setPadding(new Insets(20, 20, 20, 20));
+        layout.setSpacing(10);
+        layout.getChildren().addAll(choiceBox, button);
+
+        button.setOnAction(e -> handleSelection(choiceBox));
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -80,6 +81,11 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    private void handleSelection(ChoiceBox<String> choice) {
+        String value = choice.getValue();
+        System.out.println(value);
     }
 
     private void handleOption(CheckBox box1, CheckBox box2) {
