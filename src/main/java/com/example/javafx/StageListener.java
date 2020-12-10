@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +25,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Stage window;
     Scene scene, scene2;
 
-    Button button;
+    Button addButton;
     TableView<Product> table;
     TextField nameInput, priceInput, quantityInput;
     //private Label;
@@ -75,8 +74,11 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         quantityInput.setMinWidth(100);
 
         // Button
-        button = new Button("Add");
+        addButton = new Button("Add");
+        addButton.setOnAction(e -> addButtonClicked());
+        
         Button deleteButton = new Button("Delete");
+        deleteButton.setOnAction(e -> deleteButtonClicked());
 
         table = new TableView<>();
         table.setItems(getProduct());
@@ -89,11 +91,11 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         HBox hBox = new HBox();
         hBox.setPadding(new Insets(10, 10, 10, 10));
         hBox.setSpacing(10);
-        hBox.getChildren().addAll(nameInput, priceInput, quantityInput, button, deleteButton);
+        hBox.getChildren().addAll(nameInput, priceInput, quantityInput, addButton, deleteButton);
 
         VBox vBox = new VBox();
         vBox.getChildren().addAll(table, hBox);
-        Scene scene = new Scene(vBox, 300, 200);
+        Scene scene = new Scene(vBox, 700, 500);
         window.setScene(scene);
         window.show();
 
@@ -117,6 +119,25 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    private void deleteButtonClicked() {
+        ObservableList<Product> productSelected, allProduct;
+        allProduct = table.getItems();
+        productSelected = table.getSelectionModel().getSelectedItems();
+
+        productSelected.forEach(allProduct::remove);
+    }
+
+    private void addButtonClicked() {
+        Product product = new Product();
+        product.setName(nameInput.getText());
+        product.setPrice(Double.parseDouble(priceInput.getText()));
+        product.setQuantity(Integer.parseInt(quantityInput.getText()));
+        table.getItems().add(product);
+        nameInput.clear();
+        priceInput.clear();
+        quantityInput.clear();
     }
 
     public ObservableList<Product> getProduct() {
