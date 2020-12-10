@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +24,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Scene scene, scene2;
 
     Button button;
-    ListView<String> listView;
+    TreeView<String> treeView;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -41,19 +42,34 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
         button = new Button("Click me");
 
-        listView = new ListView<>();
+        TreeItem<String> root, bucky, megan;
+// Root
+        root = new TreeItem<>();
+        root.setExpanded(true);
 
-        // getItems returns the Observable objec which you can add item to
-        listView.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+// Bucky
+        bucky = makeBranch("Bucky", root);
+        makeBranch("Hyacinth", bucky);
+        makeBranch("YouTube", bucky);
+        makeBranch("Chicken", bucky);
 
-        listView.setEditable(true);
+        megan = makeBranch("Megan", root);
+        makeBranch("NetFlix", megan);
+        makeBranch("Prime", megan);
+        makeBranch("Amazon", megan);
 
-        button.setOnAction(e -> buttonClicked());
-        VBox layout = new VBox();
-        layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.setSpacing(10);
-        layout.getChildren().addAll(listView, button);
+        treeView = new TreeView<>(root);
+        treeView.setShowRoot(false);
+        treeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue != null) {
+                System.out.println(newValue.getValue());
+            }
+        });
+
+        // layout
+        StackPane layout = new StackPane();
+        //layout.setPadding(new Insets(20, 20, 20, 20));
+        layout.getChildren().addAll(treeView);
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -81,19 +97,6 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        }
     }
 
-    private void buttonClicked() {
-        String message = "";
-
-        // all the list (ComboBox, Choice, ListView) are type Observable list
-        ObservableList<String> fruits = listView.getSelectionModel().getSelectedItems();
-        for (String f : fruits) {
-            message += f + "\n";
-        }
-
-        System.out.println(message);
-    }
-
-
     private void handleOption(CheckBox box1, CheckBox box2) {
         String message = "User oder: \n";
         if (box1.isSelected()) {
@@ -104,6 +107,13 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         }
 
         System.out.println(message);
+    }
+
+    private TreeItem<String> makeBranch(String title, TreeItem<String> parent) {
+        TreeItem<String> item = new TreeItem<>(title);
+        item.setExpanded(true);
+        parent.getChildren().add(item);
+        return item;
     }
 
     private void closeProgram() {
