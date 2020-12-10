@@ -3,6 +3,7 @@ package com.example.javafx;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -42,34 +43,20 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(8);
-        grid.setHgap(10);
+        // check boxes
+        CheckBox box1 = new CheckBox("Bacon");
+        CheckBox box2 = new CheckBox("Tuna");
 
-        // name label
-        Label l = new Label("Username");
-        GridPane.setConstraints(l, 0, 0);
+        box2.setSelected(true);
 
-        // name input
-        TextField input = new TextField("Bucky");
-        GridPane.setConstraints(input, 1, 0);
+        Button button = new Button("Order Now");
+        button.setOnAction(e -> handleOption(box1, box2));
 
-        // Password Label
-        Label pw = new Label("Password");
-        GridPane.setConstraints(pw, 0, 1);
+        VBox layout = new VBox(10);
+        layout.setPadding(new Insets(20,20,20,20));
+        layout.getChildren().addAll(box1, box2, button);
 
-        // Password input
-        TextField pwInput = new TextField();
-        pwInput.setPromptText("Password");
-        GridPane.setConstraints(pwInput, 1, 1);
-
-        Button login = new Button("Log In");
-        GridPane.setConstraints(login, 1, 2);
-
-        grid.getChildren().addAll(l, input, pw, pwInput, login);
-
-        Scene scene = new Scene(grid, 300, 200);
+        Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
         window.show();
 
@@ -93,6 +80,18 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    private void handleOption(CheckBox box1, CheckBox box2) {
+        String message = "User oder: \n";
+        if (box1.isSelected()) {
+            message += "Bacon selected \n";
+        }
+        if (box2.isSelected()) {
+            message += "Tuna selected";
+        }
+
+        System.out.println(message);
     }
 
     private void closeProgram() {
