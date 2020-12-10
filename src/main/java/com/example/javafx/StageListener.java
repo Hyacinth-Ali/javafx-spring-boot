@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -27,6 +28,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
     Button button;
     TableView<Product> table;
+    TextField nameInput, priceInput, quantityInput;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -57,6 +59,25 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         quantityColumn.setMinWidth(100);
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
+        // Name input
+        nameInput = new TextField();
+        nameInput.setPromptText("Name");
+        nameInput.setMinWidth(100);
+
+        // Price input
+        priceInput = new TextField();
+        priceInput.setPromptText("Price");
+        priceInput.setMinWidth(100);
+
+        // Quantity input
+        quantityInput = new TextField();
+        quantityInput.setPromptText("Name");
+        quantityInput.setMinWidth(100);
+
+        // Button
+        button = new Button("Add");
+        Button deleteButton = new Button("Delete");
+
         table = new TableView<>();
         table.setItems(getProduct());
         table.getColumns().addAll(nameColumn, priceColumn, quantityColumn);
@@ -65,10 +86,14 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
 
         // layout
-        VBox layout = new VBox();
-        layout.getChildren().addAll(table);
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(10, 10, 10, 10));
+        hBox.setSpacing(10);
+        hBox.getChildren().addAll(nameInput, priceInput, quantityInput, button, deleteButton);
 
-        Scene scene = new Scene(layout, 300, 200);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(table, hBox);
+        Scene scene = new Scene(vBox, 300, 200);
         window.setScene(scene);
         window.show();
 
