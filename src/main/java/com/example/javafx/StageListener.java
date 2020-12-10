@@ -1,11 +1,9 @@
 package com.example.javafx;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +23,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Scene scene, scene2;
 
     Button button;
-    ComboBox<String> comboBox;
+    ListView<String> listView;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -43,28 +41,19 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
         button = new Button("Click me");
 
-        comboBox = new ComboBox<>();
+        listView = new ListView<>();
 
         // getItems returns the Observable objec which you can add item to
-        comboBox.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
+        listView.getItems().addAll("Apple", "Mango", "Orange", "Bananas", "Ham");
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        comboBox.setPromptText("Favourite Fruit?");
+        listView.setEditable(true);
 
-        comboBox.setEditable(true);
-
-        // combo box generate action
-        comboBox.setOnAction(e -> System.out.println( "U selected: " + comboBox.getValue() ));
-
-        button.setOnAction(e -> printFruit());
-
-        // listen for selection changes
-//        choiceBox.getSelectionModel().selectedItemProperty()
-//                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
-
+        button.setOnAction(e -> buttonClicked());
         VBox layout = new VBox();
         layout.setPadding(new Insets(20, 20, 20, 20));
         layout.setSpacing(10);
-        layout.getChildren().addAll(comboBox, button);
+        layout.getChildren().addAll(listView, button);
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -92,9 +81,18 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        }
     }
 
-    private void printFruit() {
-        System.out.println(comboBox.getValue());
+    private void buttonClicked() {
+        String message = "";
+
+        // all the list (ComboBox, Choice, ListView) are type Observable list
+        ObservableList<String> fruits = listView.getSelectionModel().getSelectedItems();
+        for (String f : fruits) {
+            message += f + "\n";
+        }
+
+        System.out.println(message);
     }
+
 
     private void handleOption(CheckBox box1, CheckBox box2) {
         String message = "User oder: \n";
