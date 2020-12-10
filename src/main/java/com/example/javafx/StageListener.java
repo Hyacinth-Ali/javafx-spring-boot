@@ -25,6 +25,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Scene scene, scene2;
 
     Button button;
+    ComboBox<String> comboBox;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -50,12 +51,14 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         // set a dfault value
         choiceBox.setValue("Apple");
 
+        // listen for selection changes
+        choiceBox.getSelectionModel().selectedItemProperty()
+                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
+
         VBox layout = new VBox();
         layout.setPadding(new Insets(20, 20, 20, 20));
         layout.setSpacing(10);
         layout.getChildren().addAll(choiceBox, button);
-
-        button.setOnAction(e -> handleSelection(choiceBox));
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -81,11 +84,6 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-    }
-
-    private void handleSelection(ChoiceBox<String> choice) {
-        String value = choice.getValue();
-        System.out.println(value);
     }
 
     private void handleOption(CheckBox box1, CheckBox box2) {
