@@ -1,9 +1,11 @@
 package com.example.javafx;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -24,7 +26,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Scene scene, scene2;
 
     Button button;
-    TreeView<String> treeView;
+    TableView<Product> table;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -40,36 +42,31 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        button = new Button("Click me");
+        // Name column
+        TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setMinWidth(200);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        TreeItem<String> root, bucky, megan;
-// Root
-        root = new TreeItem<>();
-        root.setExpanded(true);
+        // Price Column
+        TableColumn<Product, Double> priceColumn = new TableColumn<>("Price");
+        priceColumn.setMinWidth(100);
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-// Bucky
-        bucky = makeBranch("Bucky", root);
-        makeBranch("Hyacinth", bucky);
-        makeBranch("YouTube", bucky);
-        makeBranch("Chicken", bucky);
+        // Quantity Column
+        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setMinWidth(100);
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        megan = makeBranch("Megan", root);
-        makeBranch("NetFlix", megan);
-        makeBranch("Prime", megan);
-        makeBranch("Amazon", megan);
+        table = new TableView<>();
+        table.setItems(getProduct());
+        table.getColumns().addAll(nameColumn, priceColumn, quantityColumn);
 
-        treeView = new TreeView<>(root);
-        treeView.setShowRoot(false);
-        treeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-            if (newValue != null) {
-                System.out.println(newValue.getValue());
-            }
-        });
+        //button = new Button("Click me");
+
 
         // layout
-        StackPane layout = new StackPane();
-        //layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(treeView);
+        VBox layout = new VBox();
+        layout.getChildren().addAll(table);
 
         Scene scene = new Scene(layout, 300, 200);
         window.setScene(scene);
@@ -95,6 +92,18 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    public ObservableList<Product> getProduct() {
+        ObservableList<Product> products = FXCollections.observableArrayList();
+
+        products.add(new Product("Laptop", 859, 20));
+        products.add(new Product("Bouncy", 145, 78));
+        products.add(new Product("Toilet", 435, 56));
+        products.add(new Product("The Notebook DVD", 567, 456));
+        products.add(new Product("Corn", 2345, 5));
+
+        return products;
     }
 
     private void handleOption(CheckBox box1, CheckBox box2) {
