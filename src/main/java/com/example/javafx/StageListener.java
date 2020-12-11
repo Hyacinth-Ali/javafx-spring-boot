@@ -50,6 +50,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
         // Name Label
         Label nameLabel = new Label("Username");
+        nameLabel.setId("bold-label");
         GridPane.setConstraints(nameLabel, 0, 0);
 
         // Text Label
@@ -70,7 +71,12 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         Button button = new Button("Log In");
         GridPane.setConstraints(button, 1, 2);
 
-        grid.getChildren().addAll(nameLabel, nameInput, pwLabel, pwInput, button);
+        //sign up
+        Button signUp = new Button("Sign Up");
+        signUp.getStyleClass().add("button-blue");
+        GridPane.setConstraints(signUp, 1, 3);
+
+        grid.getChildren().addAll(nameLabel, nameInput, pwLabel, pwInput, button, signUp);
 
         Scene scene = new Scene(grid, 700, 500);
         scene.getStylesheets().add("viper.css");
