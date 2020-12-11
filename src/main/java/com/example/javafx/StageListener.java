@@ -1,6 +1,8 @@
 package com.example.javafx;
 
 import javafx.application.Application;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -39,6 +41,17 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
+
+        IntegerProperty x = new SimpleIntegerProperty(3);
+        IntegerProperty y = new SimpleIntegerProperty();
+
+        y.bind(x.multiply(10));
+        System.out.println("X: " + x.getValue());
+        System.out.println("y: " + y.getValue());
+
+        x.setValue(9);
+        System.out.println("X: " + x.getValue());
+        System.out.println("y: " + y.getValue());
 
         Person bucky = new Person();
         bucky.firstNameProperty().addListener((v, oldValue, newValue) -> {
