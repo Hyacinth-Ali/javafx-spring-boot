@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -42,32 +43,24 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        IntegerProperty x = new SimpleIntegerProperty(3);
-        IntegerProperty y = new SimpleIntegerProperty();
+        // Input and labels
+        TextField userInput = new TextField();
+        userInput.setMaxWidth(200);
+        Label firstLabel = new Label("Welcome to the site ");
+        Label secondLabel = new Label();
 
-        y.bind(x.multiply(10));
-        System.out.println("X: " + x.getValue());
-        System.out.println("y: " + y.getValue());
+        HBox bottomText = new HBox(firstLabel, secondLabel);
+        bottomText.setAlignment(Pos.CENTER);
 
-        x.setValue(9);
-        System.out.println("X: " + x.getValue());
-        System.out.println("y: " + y.getValue());
 
-        Person bucky = new Person();
-        bucky.firstNameProperty().addListener((v, oldValue, newValue) -> {
-            System.out.println("Name changed to new value: " + newValue );
-            System.out.println("firstName :" +bucky.firstNameProperty());
-            System.out.println("getFirstName: " + bucky.getFirstName());
-        });
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(userInput, bottomText);
+        layout.setAlignment(Pos.CENTER);
 
-        Button button = new Button("Submit");
-        button.setOnAction(e -> bucky.setFirstName("Pork"));
-
-        StackPane layout = new StackPane();
-       layout.getChildren().add(button);
+        secondLabel.textProperty().bind(userInput.textProperty());
 
         Scene scene = new Scene(layout, 700, 500);
-        scene.getStylesheets().add("viper.css");
+//        scene.getStylesheets().add("viper.css");
         window.setScene(scene);
         window.show();
 
