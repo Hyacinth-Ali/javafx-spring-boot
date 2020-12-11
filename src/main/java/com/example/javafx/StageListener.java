@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -28,6 +29,7 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Button addButton;
     TableView<Product> table;
     TextField nameInput, priceInput, quantityInput;
+    BorderPane layout;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -43,59 +45,23 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        // Name column
-        TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setMinWidth(200);
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        // File menu
+        Menu fileMenu = new Menu("File");
 
-        // Price Column
-        TableColumn<Product, Double> priceColumn = new TableColumn<>("Price");
-        priceColumn.setMinWidth(100);
-        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        // Menu items
+        fileMenu.getItems().add(new MenuItem("New..."));
+        fileMenu.getItems().add(new MenuItem("Open..."));
+        fileMenu.getItems().add(new MenuItem("Save..."));
+        fileMenu.getItems().add(new MenuItem("Settings..."));
+        fileMenu.getItems().add(new MenuItem("Exit..."));
 
-        // Quantity Column
-        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
-        quantityColumn.setMinWidth(100);
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        // Main menu bar
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().addAll(fileMenu);
 
-        // Name input
-        nameInput = new TextField();
-        nameInput.setPromptText("Name");
-        nameInput.setMinWidth(100);
-
-        // Price input
-        priceInput = new TextField();
-        priceInput.setPromptText("Price");
-        priceInput.setMinWidth(100);
-
-        // Quantity input
-        quantityInput = new TextField();
-        quantityInput.setPromptText("Name");
-        quantityInput.setMinWidth(100);
-
-        // Button
-        addButton = new Button("Add");
-        addButton.setOnAction(e -> addButtonClicked());
-        
-        Button deleteButton = new Button("Delete");
-        deleteButton.setOnAction(e -> deleteButtonClicked());
-
-        table = new TableView<>();
-        table.setItems(getProduct());
-        table.getColumns().addAll(nameColumn, priceColumn, quantityColumn);
-
-        //button = new Button("Click me");
-
-
-        // layout
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(10, 10, 10, 10));
-        hBox.setSpacing(10);
-        hBox.getChildren().addAll(nameInput, priceInput, quantityInput, addButton, deleteButton);
-
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(table, hBox);
-        Scene scene = new Scene(vBox, 700, 500);
+        layout = new BorderPane();
+        layout.setTop(menuBar);
+        Scene scene = new Scene(layout, 700, 500);
         window.setScene(scene);
         window.show();
 
