@@ -1,5 +1,6 @@
 package com.example.javafx;
 
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -26,10 +28,6 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     Stage window;
     Scene scene, scene2;
 
-    Button addButton;
-    TableView<Product> table;
-    TextField nameInput, priceInput, quantityInput;
-    BorderPane layout;
     //private Label;
 
     public StageListener(@Value("${spring.application.ui.title}") String applicationTitle,
@@ -45,65 +43,37 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        // File menu
-        Menu fileMenu = new Menu("File");
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10, 10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
 
-        // Menu items
-        MenuItem newFile = new MenuItem("New...");
-        newFile.setOnAction(e -> System.out.println("Create a file"));
-        fileMenu.getItems().add(newFile);
-        fileMenu.getItems().add(new MenuItem("Open..."));
-        fileMenu.getItems().add(new MenuItem("Save..."));
-        fileMenu.getItems().add(new SeparatorMenuItem());
-        fileMenu.getItems().add(new MenuItem("Save..."));
-        fileMenu.getItems().add(new SeparatorMenuItem());
-        fileMenu.getItems().add(new MenuItem("Exit..."));
+        // Name Label
+        Label nameLabel = new Label("Username");
+        GridPane.setConstraints(nameLabel, 0, 0);
 
-        // Edit menu
-        Menu editMenu = new Menu("_Edit");
-        editMenu.getItems().addAll(new MenuItem("Cut"), new MenuItem("Copy"));
-        MenuItem paste = new MenuItem("Paste");
-        paste.setOnAction(e -> System.out.println("Pasting ..."));
-        // disable item action
-        paste.setDisable(true);
-        editMenu.getItems().add(paste);
+        // Text Label
+        TextField nameInput = new TextField();
+        nameInput.setPromptText("Hyacinth");
+        GridPane.setConstraints(nameInput, 1, 0);
 
-        // Help menu
-        Menu helpMenu = new Menu(("Help"));
-        CheckMenuItem showLines = new CheckMenuItem("Show Line Numbers");
-        showLines.setOnAction(e -> {
-            if (showLines.isSelected()) {
-                System.out.println("Program will now display line numbers");
-            } else {
-                System.out.println("Hiding line numbers");
-            }
-        });
-        CheckMenuItem autoSave = new CheckMenuItem("Enable AUtosave");
-        autoSave.setSelected(true);
-        helpMenu.getItems().addAll(showLines, autoSave);
+        // Password Label
+        Label pwLabel = new Label("Password");
+        GridPane.setConstraints(pwLabel, 0, 1);
 
-        // Difficulty radio menu items
-        Menu difficultyMenu = new Menu("Difficulty");
-        ToggleGroup difficultyToggle = new ToggleGroup();
+        // PW Label
+        TextField pwInput = new TextField();
+        pwInput.setPromptText("Password");
+        GridPane.setConstraints(pwInput, 1, 1);
 
-        RadioMenuItem easy = new RadioMenuItem("Easy");
-        RadioMenuItem medium = new RadioMenuItem("Medium");
-        RadioMenuItem hard = new RadioMenuItem("Hard");
+        // Lopgin
+        Button button = new Button("Log In");
+        GridPane.setConstraints(button, 1, 2);
 
-        easy.setToggleGroup(difficultyToggle);
-        medium.setToggleGroup(difficultyToggle);
-        hard.setToggleGroup(difficultyToggle);
+        grid.getChildren().addAll(nameLabel, nameInput, pwLabel, pwInput, button);
 
-        difficultyMenu.getItems().addAll(easy, medium, hard);
-
-
-        // Main menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu, difficultyMenu);
-
-        layout = new BorderPane();
-        layout.setTop(menuBar);
-        Scene scene = new Scene(layout, 700, 500);
+        Scene scene = new Scene(grid, 700, 500);
+        scene.getStylesheets().add("viper.css");
         window.setScene(scene);
         window.show();
 
@@ -127,25 +97,6 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
 //        } catch (IOException e) {
 //            throw new RuntimeException(e);
 //        }
-    }
-
-    private void deleteButtonClicked() {
-        ObservableList<Product> productSelected, allProduct;
-        allProduct = table.getItems();
-        productSelected = table.getSelectionModel().getSelectedItems();
-
-        productSelected.forEach(allProduct::remove);
-    }
-
-    private void addButtonClicked() {
-        Product product = new Product();
-        product.setName(nameInput.getText());
-        product.setPrice(Double.parseDouble(priceInput.getText()));
-        product.setQuantity(Integer.parseInt(quantityInput.getText()));
-        table.getItems().add(product);
-        nameInput.clear();
-        priceInput.clear();
-        quantityInput.clear();
     }
 
     public ObservableList<Product> getProduct() {
