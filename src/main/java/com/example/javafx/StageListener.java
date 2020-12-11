@@ -68,10 +68,24 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         paste.setDisable(true);
         editMenu.getItems().add(paste);
 
+        // Help menu
+        Menu helpMenu = new Menu(("Help"));
+        CheckMenuItem showLines = new CheckMenuItem("Show Line Numbers");
+        showLines.setOnAction(e -> {
+            if (showLines.isSelected()) {
+                System.out.println("Program will now display line numbers");
+            } else {
+                System.out.println("Hiding line numbers");
+            }
+        });
+        CheckMenuItem autoSave = new CheckMenuItem("Enable AUtosave");
+        autoSave.setSelected(true);
+        helpMenu.getItems().addAll(showLines, autoSave);
+
 
         // Main menu bar
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, editMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu);
 
         layout = new BorderPane();
         layout.setTop(menuBar);
