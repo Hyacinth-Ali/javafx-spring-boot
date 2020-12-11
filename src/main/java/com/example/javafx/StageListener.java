@@ -7,10 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -43,42 +40,20 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         window = stageReadyEvent.getStage();
         window.setTitle("Hyacinth - JavaFX!");
 
-        GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(8);
-        grid.setHgap(10);
+        Person bucky = new Person();
+        bucky.firstNameProperty().addListener((v, oldValue, newValue) -> {
+            System.out.println("Name changed to new value: " + newValue );
+            System.out.println("firstName :" +bucky.firstNameProperty());
+            System.out.println("getFirstName: " + bucky.getFirstName());
+        });
 
-        // Name Label
-        Label nameLabel = new Label("Username");
-        nameLabel.setId("bold-label");
-        GridPane.setConstraints(nameLabel, 0, 0);
+        Button button = new Button("Submit");
+        button.setOnAction(e -> bucky.setFirstName("Pork"));
 
-        // Text Label
-        TextField nameInput = new TextField();
-        nameInput.setPromptText("Hyacinth");
-        GridPane.setConstraints(nameInput, 1, 0);
+        StackPane layout = new StackPane();
+       layout.getChildren().add(button);
 
-        // Password Label
-        Label pwLabel = new Label("Password");
-        GridPane.setConstraints(pwLabel, 0, 1);
-
-        // PW Label
-        TextField pwInput = new TextField();
-        pwInput.setPromptText("Password");
-        GridPane.setConstraints(pwInput, 1, 1);
-
-        // Lopgin
-        Button button = new Button("Log In");
-        GridPane.setConstraints(button, 1, 2);
-
-        //sign up
-        Button signUp = new Button("Sign Up");
-        signUp.getStyleClass().add("button-blue");
-        GridPane.setConstraints(signUp, 1, 3);
-
-        grid.getChildren().addAll(nameLabel, nameInput, pwLabel, pwInput, button, signUp);
-
-        Scene scene = new Scene(grid, 700, 500);
+        Scene scene = new Scene(layout, 700, 500);
         scene.getStylesheets().add("viper.css");
         window.setScene(scene);
         window.show();
