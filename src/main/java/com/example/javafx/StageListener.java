@@ -49,15 +49,29 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
         Menu fileMenu = new Menu("File");
 
         // Menu items
-        fileMenu.getItems().add(new MenuItem("New..."));
+        MenuItem newFile = new MenuItem("New...");
+        newFile.setOnAction(e -> System.out.println("Create a file"));
+        fileMenu.getItems().add(newFile);
         fileMenu.getItems().add(new MenuItem("Open..."));
         fileMenu.getItems().add(new MenuItem("Save..."));
-        fileMenu.getItems().add(new MenuItem("Settings..."));
+        fileMenu.getItems().add(new SeparatorMenuItem());
+        fileMenu.getItems().add(new MenuItem("Save..."));
+        fileMenu.getItems().add(new SeparatorMenuItem());
         fileMenu.getItems().add(new MenuItem("Exit..."));
+
+        // Edit menu
+        Menu editMenu = new Menu("_Edit");
+        editMenu.getItems().addAll(new MenuItem("Cut"), new MenuItem("Copy"));
+        MenuItem paste = new MenuItem("Paste");
+        paste.setOnAction(e -> System.out.println("Pasting ..."));
+        // disable item action
+        paste.setDisable(true);
+        editMenu.getItems().add(paste);
+
 
         // Main menu bar
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu);
 
         layout = new BorderPane();
         layout.setTop(menuBar);
