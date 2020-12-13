@@ -1,6 +1,7 @@
 package com.example.javafx;
 
 import javafx.application.HostServices;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,6 +25,12 @@ public class SimpleUiController {
 
     @FXML
     public void initialize () {
-        this.button.setOnAction(actionEvent -> this.label.setText(this.hostServices.getDocumentBase()));
+        //this.button.setOnAction(actionEvent -> this.label.setText(this.hostServices.getDocumentBase()));
+        System.out.println("Loading user data ..");
+    }
+
+    public void handleButtonClick() {
+        System.out.println("Button clicked");
+        button.setText("Stop!");
     }
 }

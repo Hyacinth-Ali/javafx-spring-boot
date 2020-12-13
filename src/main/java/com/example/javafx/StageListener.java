@@ -5,8 +5,10 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,6 +19,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.net.URL;
 
 @Component
 public class StageListener implements ApplicationListener<JavafxApplication.StageReadyEvent> {
@@ -40,50 +45,50 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     @Override
     public void onApplicationEvent(JavafxApplication.StageReadyEvent stageReadyEvent) {
 
-        window = stageReadyEvent.getStage();
-        window.setTitle("Hyacinth - JavaFX!");
-
-        // Input and labels
-        TextField userInput = new TextField();
-        userInput.setMaxWidth(200);
-        Label firstLabel = new Label("Welcome to the site ");
-        Label secondLabel = new Label();
-
-        HBox bottomText = new HBox(firstLabel, secondLabel);
-        bottomText.setAlignment(Pos.CENTER);
-
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(userInput, bottomText);
-        layout.setAlignment(Pos.CENTER);
-
-        secondLabel.textProperty().bind(userInput.textProperty());
-
-        Scene scene = new Scene(layout, 700, 500);
-//        scene.getStylesheets().add("viper.css");
-        window.setScene(scene);
-        window.show();
-
-
-        window.show();
-
-//        try {
-//            // original codes
-//            Stage window = stageReadyEvent.getStage();
-//            URL url = fxml.getURL();
-//            FXMLLoader fxmlLoader = new FXMLLoader(url);
-//            fxmlLoader.setControllerFactory(applicationContext::getBean);
-//            Parent root = fxmlLoader.load();
-//            Scene scene = new Scene(root, 600, 600);
-//            window.setScene(scene);
-//            window.setTitle(this.applicationTitle);
-//            window.show();
+//        window = stageReadyEvent.getStage();
+//        window.setTitle("Hyacinth - JavaFX!");
+//
+//        // Input and labels
+//        TextField userInput = new TextField();
+//        userInput.setMaxWidth(200);
+//        Label firstLabel = new Label("Welcome to the site ");
+//        Label secondLabel = new Label();
+//
+//        HBox bottomText = new HBox(firstLabel, secondLabel);
+//        bottomText.setAlignment(Pos.CENTER);
 //
 //
+//        VBox layout = new VBox(10);
+//        layout.getChildren().addAll(userInput, bottomText);
+//        layout.setAlignment(Pos.CENTER);
 //
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+//        secondLabel.textProperty().bind(userInput.textProperty());
+//
+//        Scene scene = new Scene(layout, 700, 500);
+////        scene.getStylesheets().add("viper.css");
+//        window.setScene(scene);
+//        window.show();
+//
+//
+//        window.show();
+
+        try {
+            // original codes
+            Stage window = stageReadyEvent.getStage();
+            URL url = fxml.getURL();
+            FXMLLoader fxmlLoader = new FXMLLoader(url);
+            fxmlLoader.setControllerFactory(applicationContext::getBean);
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root, 600, 600);
+            window.setScene(scene);
+            window.setTitle(this.applicationTitle);
+            window.show();
+
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ObservableList<Product> getProduct() {
