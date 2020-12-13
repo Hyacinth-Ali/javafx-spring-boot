@@ -8,11 +8,17 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -45,50 +51,46 @@ public class StageListener implements ApplicationListener<JavafxApplication.Stag
     @Override
     public void onApplicationEvent(JavafxApplication.StageReadyEvent stageReadyEvent) {
 
-//        window = stageReadyEvent.getStage();
-//        window.setTitle("Hyacinth - JavaFX!");
-//
-//        // Input and labels
-//        TextField userInput = new TextField();
-//        userInput.setMaxWidth(200);
-//        Label firstLabel = new Label("Welcome to the site ");
-//        Label secondLabel = new Label();
-//
-//        HBox bottomText = new HBox(firstLabel, secondLabel);
-//        bottomText.setAlignment(Pos.CENTER);
-//
-//
-//        VBox layout = new VBox(10);
-//        layout.getChildren().addAll(userInput, bottomText);
-//        layout.setAlignment(Pos.CENTER);
-//
-//        secondLabel.textProperty().bind(userInput.textProperty());
-//
-//        Scene scene = new Scene(layout, 700, 500);
-////        scene.getStylesheets().add("viper.css");
-//        window.setScene(scene);
-//        window.show();
-//
-//
-//        window.show();
+        window = stageReadyEvent.getStage();
+        Group root = new Group();
+        Text text =  new Text(50, 100, "Here's a Text String");
+        text.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 50));
+        text.setFill(Color.LIGHTSALMON);
+        text.setStroke(Color.DARKBLUE);
+        text.setStrokeWidth(2);
+        text.setUnderline(true);
 
-        try {
-            // original codes
-            Stage window = stageReadyEvent.getStage();
-            URL url = fxml.getURL();
-            FXMLLoader fxmlLoader = new FXMLLoader(url);
-            fxmlLoader.setControllerFactory(applicationContext::getBean);
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root, 600, 600);
-            window.setScene(scene);
-            window.setTitle(this.applicationTitle);
-            window.show();
+        root.getChildren().add(text);
+        Scene scene = new Scene(root, 600, 600);
+        window.setScene(scene);
+        window.setTitle(this.applicationTitle);
+        window.show();
 
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            // original codes
+//            Stage window = stageReadyEvent.getStage();
+////            URL url = fxml.getURL();
+////            FXMLLoader fxmlLoader = new FXMLLoader(url);
+////            fxmlLoader.setControllerFactory(applicationContext::getBean);
+////            Parent root = fxmlLoader.load();
+//
+//            Group root = new Group();
+//            Text text =  new Text(50, 100, "Here's a Text String");
+//            text.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC, 50));
+//            text.setFill(Color.LIGHTSALMON);
+//            text.setStroke(Color.DARKBLUE);
+//            text.setStrokeWidth(2);
+//            text.setUnderline(true);
+//            Scene scene = new Scene(root, 600, 600);
+//            window.setScene(scene);
+//            window.setTitle(this.applicationTitle);
+//            window.show();
+//
+//
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public ObservableList<Product> getProduct() {
