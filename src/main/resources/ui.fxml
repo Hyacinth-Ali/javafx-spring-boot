@@ -38,6 +38,7 @@
                 </Menu>
               </menus>
             </MenuBar>
+
             <HBox spacing="8.0">
                <children>
                   <TextField promptText="User Name" />
